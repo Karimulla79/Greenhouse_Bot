@@ -339,35 +339,34 @@
 #         time.sleep(5)  # Pause between applications
 
 
-import os
-import time
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, ElementNotInteractableException
-from webdriver_manager.chrome import ChromeDriverManager
+# import os
+# import time
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.chrome.service import Service
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+# from selenium.common.exceptions import NoSuchElementException, ElementNotInteractableException
+# from webdriver_manager.chrome import ChromeDriverManager
 
-# Load job URLs from a text file
-def load_job_urls(filename="jobs.txt"):
-    with open(filename, "r") as file:
-        return [line.strip() for line in file.readlines() if line.strip()]
+# # Load job URLs from a text file
+# def load_job_urls(filename="jobs.txt"):
+#     with open(filename, "r") as file:
+#         return [line.strip() for line in file.readlines() if line.strip()]
 
-# Job application details
-JOB_APP = {
-    "first_name": "Foo",
-    "last_name": "Bar",
-    "email": "test@test.com",
-    "phone": "123-456-7890",
-    "resume": os.path.abspath("resume.pdf"),  # Ensure full path
-    "linkedin": "https://www.linkedin.com/in/foobar",
-    "location": "San Francisco, CA, USA",
-    "school": "MIT",
-    "degree": "Bachelor's",
-    "work_auth": "Authorized to work for any employer"
-}
+# # Job application details
+# JOB_APP = {
+#     "first_name": "Foo",
+#     "last_name": "Bar",
+#     "email": "test@test.com",
+#     "phone": "123-456-7890",
+#     "resume": os.path.abspath("resume.pdf"),  # Ensure full path
+#     "linkedin": "https://www.linkedin.com/in/foobar",
+#     "location": "San Francisco, CA, USA",
+#     "school": "MIT",
+#     "degree": "Bachelor's",
+#     "work_auth": "Authorized to work for any employer"
 
 # def apply_greenhouse(driver, url):
 #     print(f"\n🔹 Applying to: {url}")
@@ -871,7 +870,7 @@ def random_sleep(min_time=2, max_time=8):
 JOB_APP = {
     "first_name": "Foo",
     "last_name": "Bar",
-    "email": "test@test.com",
+    "email": "pkarimulla9@gmail.com",
     "phone": "123-456-7890",
     "resume": os.path.abspath("resume.pdf"),
     "linkedin": "https://www.linkedin.com/in/foobar",
@@ -946,6 +945,14 @@ def apply_greenhouse(driver, url):
 
         random_sleep()
 
+        # ✅ **OTP Handling - Added Here**
+        otp_fields = driver.find_elements(By.XPATH, "//input[starts-with(@id, 'security-input-')]")
+        if otp_fields:
+            print("🔒 OTP verification detected. Fetching OTP...")
+            otp_code = fetch_latest_otp(JOB_APP["email"], JOB_APP["email_password"], JOB_APP["imap_server"])
+            if otp_code:
+                enter_otp(driver, otp_code)
+
         # Wait for manual input if required fields are missing
         wait_time = 0
         while True:
@@ -989,18 +996,42 @@ def apply_greenhouse(driver, url):
         print(f"⚠️ Error while submitting: {e}")
 
 # Main execution
+# if __name__ == "__main__":
+#     job_urls = load_job_urls()
+#     print(f"\n✅ Found {len(job_urls)} job(s) to apply for.\n")
+
+#     service = Service(ChromeDriverManager().install())
+#     driver = webdriver.Chrome(service=service)
+
+#     for index, job_url in enumerate(job_urls, start=1):
+#         print(f"\n🔹 Applying for job {index}/{len(job_urls)}: {job_url}")
+#         apply_greenhouse(driver, job_url)
+#         print("⏳ Waiting before next application...\n")
+#         random_sleep()
+
+#     driver.quit()
+#     print("✅ All applications completed!")
+
 if __name__ == "__main__":
     job_urls = load_job_urls()
     print(f"\n✅ Found {len(job_urls)} job(s) to apply for.\n")
 
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service)
-
     for index, job_url in enumerate(job_urls, start=1):
         print(f"\n🔹 Applying for job {index}/{len(job_urls)}: {job_url}")
-        apply_greenhouse(driver, job_url)
+
+        # Start a new browser session for each application
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service)
+
+        try:
+            apply_greenhouse(driver, job_url)
+            print("✅ Application submitted successfully.")
+        except Exception as e:
+            print(f"⚠️ Error while applying for {job_url}: {e}")
+
+        driver.quit()  # Close browser before moving to the next job
         print("⏳ Waiting before next application...\n")
         random_sleep()
 
-    driver.quit()
     print("✅ All applications completed!")
+
