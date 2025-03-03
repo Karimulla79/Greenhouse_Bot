@@ -1,45 +1,69 @@
-# Software Engineering Job Application Bot (2.0) 👩🏾‍💻
-#### 5 Python Projects in 5 Days - Day 5: Scripting
+# Greenhouse Job Application Automation
 
-A script to automatically search Glassdoor for job listings, aggregate every application URL, and apply to each job using pre-populated data. ***All with one click!***
+## Overview
+This Python script automates the job application process on Greenhouse using Selenium. It extracts job listings from a file and dynamically fills out application forms, including uploading resumes and handling OTP verification.
 
-![app demo](demo.gif)
+## Features
+- Reads job URLs from a text file (`jobs.txt`)
+- Automatically fills required fields (name, email, phone, location, etc.)
+- Uploads a resume
+- Handles OTP verification for secure job applications
+- Detects missing required fields and prompts for manual input
+- Uses randomized sleep intervals to mimic human behavior
 
-**📸YouTube Tutorial: [https://youtu.be/N_7d8vg_TQA](https://youtu.be/N_7d8vg_TQA)**
+## Setup
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Karimulla79/Greenhouse_Bot.git
+cd Greenhouse_Bot
+```
 
-## Inspiration
-Ever sit at your desk for hours, clicking through endless job listings hoping to strike gold with one response? To solve this, I made a script a few months ago, which would take in a list of job URLs and automatically apply to potentially 100s of jobs with the click of a button. This was great, but there was one problem — the process of aggregating those links is painstaking. So, I wanted to automate that process with this project! ✨
+### 2. Create a Virtual Environment
+```bash
+python -m venv venv
+source venv/bin/activate   # On macOS/Linux
+venv\Scripts\activate     # On Windows
+```
 
-## Installation
-1. Install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/) (or an alternatie driver for your browser of choice):
-   * Run `brew cask install chromedriver`
-   * Confirm installation: `chromedriver --version`
-   * Check location of ChromeDriver: `which chromedriver`
-   * Wherever the `driver` is initialized in the code, insert the ChromeDriver location
-2. Install Selenium: `pip install selenium`
-3. Install BeautifulSoup: `pip install beautifulsoup4`
+### 3. Install Dependencies
+Ensure you have Python installed, then install the required dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+### 4. ChromeDriver Setup
+The script uses `webdriver-manager` to automatically download and set up the Chrome WebDriver.
 
 ## Usage
-#### To test `get_links.py`
-1. Uncomment the last line `get_links.py`
-2. Run `$ python get_links.py`
+1. Place your job URLs in a file named `jobs.txt` (one URL per line).
+2. Customize your job application details in the `JOB_APP` dictionary inside `apply.py`.
+3. Run the script:
+   ```bash
+   python apply.py
+   ```
+4. The script will apply to each job sequentially, handling necessary form fields and submitting applications.
+5. If OTP verification is required, the script will pause and prompt the user to manually enter the OTP sent to their email before proceeding with the application submission.
 
-#### To run the entire script:
-1. Set a number of pages you'd like to iterate through here
-2. Run `$ python apply.py`
-3. The script will open [glassdoor.com](https://www.glassdoor.com/index.htm), at which point you should log-in
-4. From there on, everything is automatic!
+## File Structure
+```
+GreenHouse_Bot/
+│-- apply.py         # Main script for job applications
+│-- jobs.txt         # List of Greenhouse job application URLs
+│-- resume.pdf       # Resume file to be uploaded
+│-- requirements.txt # Python dependencies
+│-- venv/            # Virtual environment (if created)
+│-- README.md        # Project documentation
+```
+
+## Notes
+- Ensure your resume file (`resume.pdf`) is in the project directory.
+- If OTP verification is enabled, ensure you configure email credentials for fetching OTPs.
+- The script handles most fields dynamically, but some manual intervention may be required.
+- When prompted for OTP input, manually check your email and enter the code in the script to proceed.
 
 
-## Thanks
 
-* [Selenium](https://selenium-python.readthedocs.io/) - A tool designed for QA testing, but that actually works great for making these types of bots
-* [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/doc) - A tool to scrape HTML/XML content (that saved be *big time* with this project)
 
-## Learn More
+---
+**Credits: whitebox-learning! 🚀**
 
-* [My Previous Video](https://www.youtube.com/watch?v=nRmrEC5WnzY) - For more background on the `apply.py` code
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/harshibar/5-python-projects/blob/master/LICENSE) file for details.
