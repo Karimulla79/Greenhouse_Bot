@@ -4,7 +4,7 @@
 This Python script automates the job application process on Greenhouse using Selenium. It extracts job listings from a file and dynamically fills out application forms, including uploading resumes and handling OTP verification.
 
 ## Features
-- Reads job URLs from a text file (`jobs.txt`)
+- Reads job URLs from a text file (`job_links.txt`)
 - Automatically fills required fields (name, email, phone, location, etc.)
 - Uploads a resume
 - Handles OTP verification for secure job applications

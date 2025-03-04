@@ -12,7 +12,7 @@ from selenium.common.exceptions import NoSuchElementException, ElementClickInter
 from webdriver_manager.chrome import ChromeDriverManager
 
 # Load job URLs from a text file
-def load_job_urls(filename="jobs.txt"):
+def load_job_urls(filename="job_links.txt"):
     with open(filename, "r") as file:
         return [line.strip() for line in file.readlines() if line.strip()]
 
@@ -26,9 +26,9 @@ def random_sleep(min_time=2, max_time=8):
 JOB_APP = {
     "first_name": "Foo",
     "last_name": "Bar",
-    "email": "pkarimulla9@gmail.com",
+    "email": "elonmusk@gmail.com",
     "phone": "123-456-7890",
-    "resume": os.path.abspath("resume.pdf"),
+    "resume": os.path.abspath("resume/resume.pdf"),
     "linkedin": "https://www.linkedin.com/in/foobar",
     "location": "San Francisco, CA, USA",
     "school": "MIT",
@@ -89,6 +89,7 @@ def apply_greenhouse(driver, url):
                 print(f"⚠️ {key} field not found. It might be optional.")
 
         random_sleep()
+        
 
         # Upload Resume Automatically
         try:
